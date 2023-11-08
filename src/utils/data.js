@@ -1,0 +1,900 @@
+import { course_images } from "./images";
+import axios from "axios";
+
+const courses = [
+    {
+        id: "xMHCZl",
+        category: "python",
+        "image": "https://miro.medium.com/v2/resize:fit:700/1*3IcLSFuT8PQg4cUBaRXH1A.png",
+        course_name: "Learn Python: The Complete Python Programming Course",
+        description: "Learn A-Z everything about Python, from the basics, to advanced topics like Python GUI, Python Data Analysis, and more!",
+        students: [
+            {
+            id: 101,
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            },
+            {
+            id: 102,
+            name: 'Bob Smith',
+            email: 'bob@example.com',
+            },
+            ],
+        duration: '8 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Open',
+        schedule: 'Tuesdays and Thursdays, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Python knowledge', 'Familiarity with Python'],
+        
+        creator: "Avinash Jain, The Codex",
+        updated_date: "9/2015",
+        lang: "english",
+        
+        discounted_price: 9.99,
+        what_you_will_learn: [
+            "Create their own Python Programs",
+            "Become an experienced Python Programmer",
+            "Parse the Web and Create their own Games"
+        ],
+        content: [
+            "Up and Running With Python",
+            "The Basics(Data Types)",
+            "Conditions and Loops",
+            "Functions!",
+            "Classes! (Object Oriented Programming)",
+            "File Input/Output",
+            "Using Python Modules"
+        ]
+    },
+     {
+    //     id: "dtfo9e",
+    //     category: "python",
+    //      image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSGiRX_pG7uhGnf0KU14mdirictzeflGEiaWw&usqp=CAU",
+    //     course_name: "Learning Python for Data Analysis and Visualization",
+    //     description: "Learn python and how to use it to analyze,visualize and present data. Includes tons of sample code and hours of video!",
+    //  students : [   {
+    //         id: 103,
+    //         name: 'Nope Johnson',
+    //         email: 'nope@example.com',
+    //         },
+    //         {
+    //         id: 104,
+    //         name: 'Boby Smith',
+    //         email: 'boby@example.com',
+    //         },
+    //         {
+    //             id: 105,
+    //             name: 'Aria Were',
+    //             email: 'aria@example.com',   
+    //         }
+    //         ],
+    //     duration: '7 weeks',
+    //     location: 'Online',
+    //     enrollmentStatus: 'Open',
+    //     schedule: 'Monday and Tuesday, 6:00 PM - 8:00 PM',
+    //     prerequisites: ['Basic Python knowledge', 'Familiarity with Python'],
+       
+    //     creator: "Jose Portilla",
+    //     updated_date: "9/2019",
+    //     lang: "english",
+        
+    //     discounted_price: 9.99,
+    //     what_you_will_learn: [
+    //         "Have an intermediate skill level of Python programming.",
+    //         "Use the numpy library to create and manipulate arrays.",
+    //         "Learn how to work with various data formats within python, including: JSON,HTML, and MS Excel Worksheets.",
+    //         "Have a portfolio of various data analysis projects."
+    //     ],
+    //     content: [
+    //         "Intro to Course and Python",
+    //         "Learning Numpy",
+    //         "Data Visualization",
+    //         "Example Projects",
+    //         "Machine Learning",
+    //         "SQL and Python",
+    //         "Web Scraping with Python"
+    //     ]
+    },
+    {
+        id: "fLroW6",
+        category: "python",
+        image: "https://www.digiprima.com/files/wytrvqctb8ziq4e9icw2/python%20blog.jpg",
+        course_name: "Python for Beginners - Learn Programming from scratch",
+        description: "Python For Beginners : This course is meant for absolute beginners in programming or in python!",
+     students : [{
+        id: 104,
+        name: 'Boby Smith',
+        email: 'boby@example.com',
+        },
+        {
+            id: 105,
+            name: 'Aria Were',
+            email: 'aria@example.com',   
+        }
+        ],
+        duration: '7 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Open',
+        schedule: 'Tuesdays and Wednesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Python knowledge', 'Familiarity with Python'],
+      
+        creator: "Edwin Diaz, Coding Faculty Solutionss",
+        updated_date: "5/2022",
+        lang: "english",
+     
+        discounted_price: 9.99,
+        what_you_will_learn: [
+            "To learn the python language",
+            "To learn the CORE skills to understand any programming language",
+        ],
+        content: [
+            "Programming fundamentals",
+            "Getting Started with Python",
+            "Python Basics",
+            "Conditional structures",
+            "Functions",
+            "Working with files",
+        ]
+    },
+    {
+        id: "VwkN_o",
+        category: "python",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRb5v5iwnxtPwUSSVtxmzhXeH9bpgHjp6NM5g&usqp=CAU",
+        course_name: "Python For Beginners : This course is meant for absolute beginners in programming or in python.",
+        description: "Python introduction for beginners. Learn complete Python from scratch!",
+      
+        duration: '6 weeks',
+     
+        location: 'Online',
+        enrollmentStatus: 'Closed',
+        schedule: 'Thursday and Friday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Python knowledge', 'Familiarity with Python'],
+        creator: "Abrar Hussain",
+        updated_date: "9/2019",
+        lang: "english",
+        students: [
+            {
+            id: 101,
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            },
+            {
+            id: 102,
+            name: 'Bob Smith',
+            email: 'bob@example.com',
+            },
+            ],
+        discounted_price: 9.99,
+        what_you_will_learn: [
+            "Create fully functional Python programs",
+            "Learn about loop structures and conditionals",
+            "Work with Python file handling",
+            "Manipulate strings and data"
+        ],
+        content: [
+            "Getting Started",
+            "The Basics",
+            "User Input",
+            "Functions and Files",
+            "Classes and Objects",
+            "Graphics and Animations",
+        ]
+    },
+    {
+        id: "xJB-WU",
+        category: "python",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRzYksU6uR2XNpSViuwz7R9vgRZjqwm3LNpqg&usqp=CAU",
+        course_name: "Python Beyond the Basics - Object-Oriented Programming",
+        description: "From Classes To Inheritance - OOP In-Depth For Python Programmers",   
+        duration: '10 weeks', 
+        location: 'Online',
+        enrollmentStatus: 'Closed',
+        schedule: 'Friday and Saturday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Python knowledge', 'Familiarity with Python'],
+        creator: "Infinite Skills",
+        updated_date: "9/2019",
+        lang: "english",
+        students: [
+            {
+            id: 103,
+            name: 'Nope Johnson',
+            email: 'nope@example.com',
+            },
+            {
+            id: 104,
+            name: 'Boby Smith',
+            email: 'boby@example.com',
+            },
+            {
+                id: 105,
+                name: 'Aria Were',
+                email: 'aria@example.com',   
+            }
+            ],
+        discounted_price: 10.99,
+        what_you_will_learn: [
+            "Design Reusable Object-Oriented Python Classes",
+            "How to handle Errors",
+            "Work with Python file handling",
+            "Apply OOP Concepts to handle complexity"
+        ],
+        content: [
+            "Introduction to Object Oriented Python",
+            "Classes",
+            "Inhertiance and Polymorphism",
+            "Advanced Features",
+            "Object Serialization",
+            "Efficiency and testing",
+            "Conclusion"
+        ]
+    },
+    {
+        id: "qjdYG4",
+        category: "web development",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRTdn7dzIIylNV9goc9PEU3rErN4wNTOfG4Xg&usqp=CAU",
+        course_name: "Become a Certified HTML, CSS, JavaScript Web Developer",
+        description: "Complete coverage of HTML, CSS, Javascript while you Earn Four Respected Certifications",
+       
+        duration: '8 weeks',
+        location: 'Online',
+        enrollmentStatus: 'In Progress',
+        schedule: 'Monday and Tuesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Web knowledge', 'Familiarity with Web tools'],
+        creator: "Tech Learning Network, Mark Lassoff",
+        updated_date: "11/2020",
+        lang: "english",
+        students: [
+            {
+            id: 107,
+            name: 'Carrie Mint',
+            email: 'carrie@mail.com',
+            },
+            {
+                id: 103,
+                name: 'Nope Johnson',
+                email: 'nope@example.com',
+                },
+                {
+                id: 104,
+                name: 'Boby Smith',
+                email: 'boby@example.com',
+                }
+        ],
+        discounted_price: 9.99,
+        what_you_will_learn: [
+            "Prepare for Industry Certification Exam",
+            "Hours and Hours of Video Instruction",
+            "Over 25 Engaging Lab Exercises",
+            "Instructor Available by Email or on the Forums",
+            "Comprehensive Coverage of HTML and CSS"
+        ],
+        content: [
+            "Your Develpment Toolbox",
+            "Certified HTML5 Specialist 2019",
+            "Certified CSS Specialist 2019",
+            "JavaScript Specialist 2019",
+            "jQuery for Application Development",
+            "Everything you wanted to know about formatting text",
+            "Hyperlinks - Connecting Pages and Content",
+            "Digital Media",
+            "Displaying Data in Tables and iFrames",
+            "Styling with CSS"
+        ]
+    },
+    {
+        id: "3pm9Ab",
+        category: "web development",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRRCHVSYjErZt2w6TLyqnTe1fw4OwiMBx7RHg&usqp=CAU",
+        course_name: "The Complete 2020 Fullstack Web Developer Course",
+        description: "Learn HTML5, CSS3, JavaScript, Python, Wagtail CMS, PHP & MySQL from scratch!",
+       
+        duration: '8 weeks',
+        students:[
+            {
+                id: 103,
+                name: 'Nope Johnson',
+                email: 'nope@example.com',
+                },
+                {
+                id: 104,
+                name: 'Boby Smith',
+                email: 'boby@example.com',
+                },
+        ],
+        location: 'Online',
+        enrollmentStatus: 'In Progress',
+        schedule: 'Tuesdays and Wednesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Web knowledge', 'Familiarity with Web tools'],
+        creator: "Kalob Taulien",
+        updated_date: "9/2019",
+        lang: "english",
+       
+        discounted_price: 14.99,
+        what_you_will_learn: [
+            "Learn Python from beginner to advanced",
+            "Lots of projects, big and small!",
+            "Learn PHP for server code execution",
+            "Build a Login/Registration/Members-only website, just like Facebook",
+            "Learn the LAMP Stack: Linux, Apache, PHP and MySQL",
+            "Learn HTML5, CSS3, Vanilla JS (ES6+), Python, Wagtail CMS, PHP and MySQL all from scratch"
+        ],
+        content: [
+            "The Ultimate HTML Developer: Introduction",
+            "Getting Started",
+            "Advanced HTML",
+            "Text Formatting",
+            "Fonts and Font styling",
+            "Links and their 'states'",
+            "Better selectors",
+            "Positions",
+            "Advanced Selectors",
+            "CSS3 Introduction",
+            "CSS3 Backgrounds Images",
+            "CSS3 Gradients",
+            "CSS3 Text Formatting",
+            "CSS3 Transitions",
+            "CSS3 Animations",
+            "CSS3 Flexbox",
+            "Responsive Web Design"
+        ]
+    },
+    {
+        id: "RuUs0x",
+        category: "web development",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS6vTGh_6hFxyUlv0RfFfhab4EF8hOlzTnSQg&usqp=CAU",
+        course_name: "Introduction to Web Development",
+        description: "Are you Interested in Learning Web Development? Enroll in this Free course for a Dynamic Introduction to the Profession!",
+        students:[
+            {
+                id: 108,
+                name: 'Mera Dutt',
+                email: 'mera@mail.com',
+                },
+                {
+                    id: 104,
+                    name: 'Boby Smith',
+                    email: 'boby@example.com',
+                    },
+                    {
+                        id: 103,
+                        name: 'Nope Johnson',
+                        email: 'nope@example.com',
+                        },
+
+            ],
+        duration: '9 weeks',
+       
+        location: 'Online',
+        enrollmentStatus: 'Open',
+        schedule: 'Wednesday and Thursdays, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Web knowledge', 'Familiarity with Web tools'],
+        creator: "Tech Learning Network, Mark Lassoff",
+        updated_date: "10/2020",
+        lang: "english",
+        
+        discounted_price: 8.99,
+        what_you_will_learn: [
+            "Understand the technologies used in web development",
+            "Apply HTML document structure",
+            "Add images to a web page",
+            "Understand the HTML/CSS color model",
+            "Alter CSS text properties",
+            "Know the role of Javascript programming in web development",
+            "Create a basic Javascript program to collect data",
+            "Understand the next steps to learning professional web development skills"
+        ],
+        content: [
+            "Tools and HTML",
+            "CSS",
+            "Javascript",
+            "Bonus Lecture",
+        ]
+    },
+    {
+        id: "e_0hBc",
+        category: "web development",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNS5f_CQVQlwLGgEoxzzsd3q05j3wMP_bEsQ&usqp=CAU",
+        course_name: "Running a Web Development Business: The Complete Guide",
+        description: "Learn how to start and grow a successful web development business. Get up & running and making sales in under a week.",
+       
+        duration: '6 weeks',
+        students:[
+            {
+                id: 108,
+                name: 'Mera Dutt',
+                email: 'mera@mail.com',
+                },
+                {
+                id: 109,
+                name: 'Singa Rao',
+                email: 'singa@example.com',
+                },
+                {
+                    id: 110,
+                    name: 'Shyam Singh',
+                    email: 'shyam@example.com',   
+                }
+        ],
+        location: 'Online',
+        enrollmentStatus: 'Open',
+        schedule: 'Thursday and Friday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Web knowledge', 'Familiarity with Web tools'],
+        creator: "Evan Kimbrell",
+        updated_date: "8/2022",
+        lang: "english",
+       
+        discounted_price: 14.99,
+        what_you_will_learn: [
+            "Understand how development stacks work and pick which stack is ideal for you",
+            "Decide between hiring in-house employees or contractors for your business",
+            "Choose a winning combination of traits that you want your business to convey",
+            "Find cheap and professional ways of creating an online presence",
+            "Master the biggest platforms for contracting: Freelancer and Upwork",
+            "Create and organize a professional and effective portfolio",
+            "Utilize 15 different strategies to attract potential clients",
+            "Use tools like Proposify and Nusii to create and streamline proposals"
+        ],
+        content: [
+            "Introduction",
+            "The Essentials",
+            "Planning your strategy",
+            "Setting up your presence",
+            "Finding subcontractors",
+            "Building a portfolio",
+            "Getting clients",
+            "Building proposals",
+            "Managing clients",
+            "Best practices"
+        ]
+    },
+    {
+        id: "z9dxdw",
+        category: "web development",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSDb2pjKozOHBu8R9RDxVI7X9J2VW28Q3aCtQ&usqp=CAU",
+        course_name: "Ultimate Web Designer & Web Developer Course",
+        description: "Become a Full-Stack Web Designer in 2022 - Learn Everything from Web Design Fundamentals to Front-End Web Development",
+      
+        location: 'Online',
+        enrollmentStatus: 'Close',
+        schedule: 'Friday and Saturday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic Web knowledge', 'Familiarity with Web tools'],
+        duration: '8 weeks',
+        creator: "Brad Hussey",
+        updated_date: "3/2022",
+        lang: "english",
+        students:[
+            {
+                id: 108,
+                name: 'Mera Dutt',
+                email: 'mera@mail.com',
+                },
+                {
+                id: 109,
+                name: 'Singa Rao',
+                email: 'singa@example.com',
+                },
+                {
+                    id: 110,
+                    name: 'Shyam Singh',
+                    email: 'shyam@example.com',   
+                }
+        ],
+        discounted_price: 11.99,
+        what_you_will_learn: [
+            "Build 23+ custom web design & development projects by hand",
+            "Plan, design and code your very own self-directed website project from scratch to launch!",
+            "Code websites & applications with HTML5 & CSS3",
+            "Comfortably use Adobe Photoshop for photo manipulation, graphics creation & design",
+            "Design a professional and modern business card in Adobe Photoshop",
+            "Learn visual design fundamentals for beginners",
+            "Learn how to choose the correct font combinations for your projects",
+            "Design, build and manage custom database-driven websites with MySQL"
+        ],
+        content: [
+            "Hey! Welcome to the course!",
+            "Introduction to Visual Design for Web Designers & Web Developers",
+            "Designing Websites, Graphics & Interfaces with Figma",
+            "Introduction to Adobe Photoshop",
+            "Introduction to Web Design (and more Photoshop)",
+            "Advanced Web Design Challenge",
+            "Introduction to HTML",
+            "Intermediate HTML",
+            "Advanced HTML & HTML5",
+            "Expert HTML & HTML5"
+        ]
+    },
+    {
+        id: "X8Pg1X",
+        category: "data science",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQT67r2K11OW0UlEFiev-bpfCAtwli4nlhGOA&usqp=CAU",
+        course_name: "Data Science A-Z™: Real-Life Data Science Exercises Included",
+        description: "Learn Data Science step by step through real Analytics examples. Data Mining, Modeling, Tableau Visualization and more!",
+      
+        duration: '8 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Close',
+        schedule: 'Monday and Tuesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic DataScience knowledge', 'Familiarity with new tools'],
+        creator: "Kirill Eremenko, Ligency Team",
+        updated_date: "9/2022",
+        lang: "english",
+        students:[
+            {
+                id: 103,
+                name: 'Nope Johnson',
+                email: 'nope@example.com',
+                },
+                {
+                id: 104,
+                name: 'Boby Smith',
+                email: 'boby@example.com',
+                },
+        ],
+        discounted_price: 16.99,
+        what_you_will_learn: [
+            "Successfully perform all steps in a complex Data Science project",
+            "Perform Data Mining in Tableau",
+            "Apply Ordinary Least Squares method to Create Linear Regressions",
+            "Assess the Adjusted R-Squared for all types of models",
+            "Create a Multiple Linear Regression (MLR)",
+            "Interpret coefficients of an MLR",
+            "Use Backward Elimination, Forward Selection, and Bidirectional Elimination methods to create statistical models",
+            "Read a Confusion Matrix"
+        ],
+        content: [
+            "What is Data Science?",
+            "Part 1: Visualisation",
+            "Introduction to Tableau",
+            "Advanced Data Mining with Tableau",
+            "Stats Refresher",
+            "Simple Linear Regression",
+            "Model maintenance",
+            "SQL Programming for Data Science",
+        ]
+    },
+    {
+        id: "9Ui0L1",
+        category: "data science",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6e9AhO2l-e0O22UWqGmVTEFvFEpJn6zEqjQ&usqp=CAU",
+        course_name: "Machine Learning, Data Science and Deep Learning with Python",
+        description: "Complete hands-on machine learning tutorial with data science, Tensorflow, artificial intelligence, and neural networks",
+        students:[
+            {
+                id: 108,
+                name: 'Mera Dutt',
+                email: 'mera@mail.com',
+                },
+                {
+                id: 109,
+                name: 'Singa Rao',
+                email: 'singa@example.com',
+                },
+                {
+                    id: 110,
+                    name: 'Shyam Singh',
+                    email: 'shyam@example.com',   
+                }
+        ],
+        location: 'Online',
+        enrollmentStatus: 'In Progress',
+        schedule: 'Tuesdays and Wednesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic DataScience knowledge', 'Familiarity with new tools'],
+        duration: '7 weeks',
+        creator: "Sundog Education by Frank Kane",
+        updated_date: "2/2022",
+        lang: ["english", "french"],
+       
+        discounted_price: 14.99,
+        what_you_will_learn: [
+            "Build artificial neural networks with Tensorflow and Keras",
+            "Classify images, data, and sentiments using deep learning",
+            "Data Visualization with MatPlotLib and Seaborn",
+            "Classify data using K-Means clustering, Support Vector Machines (SVM), KNN, Decision Trees, Naive Bayes, and PCA",
+            "Build a movie recommender system using item-based and user-based collaborative filtering",
+            "Interpret coefficients of an MLR",
+        ],
+        content: [
+            "Statistics and Probability Refresher, and Python Practice",
+            "Predictive Models",
+            "Machine Learning with Python",
+            "Recommender Systems",
+            "More Data Mining and Machine Learning Techniques",
+            "Dealing with Real-World Data",
+            "Apache Spark: Machine Learning on Big Data",
+            "Deep Learning and Neural Networks",
+        ]
+    },
+    {
+        id: "TKGumi",
+        category: "data science",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSs2i-LqRbJq3TDJR_TQUJxq08EmANv7ciyww&usqp=CAU",
+        course_name: "Data Science: Deep Learning and Neural Networks in Python",
+        description: "The MOST in-depth look at neural network theory for machine learning, with both pure Python and Tensorflow code",
+        students: [
+            {
+            id: 101,
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            },
+            {
+            id: 102,
+            name: 'Bob Smith',
+            email: 'bob@example.com',
+            },
+            ],
+        duration: '12 weeks',
+        location: 'Online',
+        enrollmentStatus: 'In Progress',
+        schedule: 'Wednesday and Thursdays, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic DataScience knowledge', 'Familiarity with new tools'],
+       
+        creator: "Lazy Programmer Inc.",
+        updated_date: "8/2022",
+        lang: ["english", "Portuguese"],
+       
+        discounted_price: 19.99,
+        what_you_will_learn: [
+            "Learn how Deep Learning REALLY works (not just some diagrams and magical black box code)",
+            "Code a neural network from scratch in Python and numpy",
+            "Describe different types of neural networks and the different types of problems they are used for",
+            "Create a neural network with an output that has K > 2 classes using softmax",
+            "Install TensorFlow",
+        ],
+        content: [
+            "Preliminaries: From Neurons to Neural Networks",
+            "Training a neural network",
+            "Practical Machine Learning",
+            "TensorFlow, exercises, practice, and what to learn next",
+            "Project: Facial Expression Recognition",
+            "Backpropagation Supplementary Lectures",
+            "Higher-level Discussion",
+        ]
+    },
+    {
+        id: "oETsMx",
+        category: "data science",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWwznyANnqbYcyLV1pvPO1g9vc06hnAO7LMmaWXWegUjDakSrEDsZlGnp68AAksdKwmhc&usqp=CAU",
+        course_name: "R Programming A-Z™: R For Data Science With Real Exercises!",
+        description: "Learn Programming In R And R Studio. Data Analytics, Data Science, Statistical Analysis, Packages, Functions, GGPlot2",
+        students : [   {
+            id: 103,
+            name: 'Nope Johnson',
+            email: 'nope@example.com',
+            },
+            {
+            id: 104,
+            name: 'Boby Smith',
+            email: 'boby@example.com',
+            },
+            {
+                id: 105,
+                name: 'Aria Were',
+                email: 'aria@example.com',   
+            }
+            ],
+        location: 'Online',
+        enrollmentStatus: 'In Progress',
+        schedule: 'Thursday and Friday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic DataScience knowledge', 'Familiarity with new tools'],
+        duration: '10 weeks',
+      
+        creator: "Kirill Eremenko, Ligency Team",
+        updated_date: "11/2021",
+        lang: "english",
+       
+        discounted_price: 6.99,
+        what_you_will_learn: [
+            "Learn to program in R at a good level",
+            "Learn the core principles of programming",
+            "Learn how to create variables",
+            "Learn how to create a while() loop and a for() loop in R",
+            "Learn the matrix() function, learn rbind() and cbind()",
+            "Learn how to customize R studio to suit your preferences"
+        ],
+        content: [
+            "Hit The Ground Running",
+            "Core Programming Principles",
+            "Fundamentals of R",
+            "Matrices",
+            "Data Frames",
+            "Advanced Visualization with GGPlot2",
+            "Homework Solutions",
+        ]
+    },
+    {
+        id: "-aWjaj",
+        category: "data science",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRm2FGzmTtbZYk99uP37reG7Zl4IfoAyzKU2CDJevtDhHOjD3M0G61gfOlk4yKa_fuIua0&usqp=CAU",
+        course_name: "Data Science and Machine Learning Bootcamp with R",
+        description: "Learn how to use the R programming language for data science and machine learning and data visualization!",
+        students: [
+            {
+            id: 101,
+            name: 'Alice Johnson',
+            email: 'alice@example.com',
+            },
+            {
+            id: 102,
+            name: 'Bob Smith',
+            email: 'bob@example.com',
+            },
+            ],
+        duration: '8 weeks',
+      
+        location: 'Online',
+        enrollmentStatus: 'Close',
+        schedule: 'Friday and Saturday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic DataScience knowledge', 'Familiarity with new tools'],
+        creator: "Jose Portilla",
+        updated_date: "12/2020",
+        lang: ["english", "arabic"],
+      
+        discounted_price: 16.99,
+        what_you_will_learn: [
+            "Program in R",
+            "Create Data Visualizations",
+            "Use R to manipulate data easily",
+            "Use R for Data Science",
+            "Use R for Data Analysis",
+            "Use R to handle csv,excel,SQL files or web scraping",
+            "Use R for Machine Learning Algorithms"
+        ],
+        content: [
+            "Course Best Practices",
+            "Windows Installation Set-Up",
+            "Mac OS Installation Set-Up",
+            "Linux Installation",
+            "Development Environment Overview",
+            "Introduction to R Basics",
+            "R Data Frames",
+        ]
+    },
+    {
+        id: "xxxbMD",
+        category: "aws",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTHYfH1Q9N_tyIkww51fm-300_J7fbkGF5adg&usqp=CAU",
+        course_name: "Amazon Web Services (AWS) Certified 2022 - 4 Certifications!",
+        description: "Videos, labs & practice exams - AWS Certified (Solutions Architect, Developer, SysOps Administrator, Cloud Practitioner)",
+       
+        duration: '7 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Close',
+        schedule: 'Tuesdays and Thursdays, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic AWS knowledge', 'Familiarity with cloud services'],
+      
+        students:[
+            {
+                id: 108,
+                name: 'Mera Dutt',
+                email: 'mera@mail.com',
+                },
+                {
+                id: 109,
+                name: 'Singa Rao',
+                email: 'singa@example.com',
+                },
+                {
+                    id: 110,
+                    name: 'Shyam Singh',
+                    email: 'shyam@example.com',   
+                }
+        ],
+        creator: "BackSpace Academy, Paul Coady",
+        updated_date: "12/2021",
+        lang: ["english", "arabic"],
+       
+        discounted_price: 11.99,
+        what_you_will_learn: [
+            "You will be fully prepared for the",
+            "AWS Certified Solutions Architect",
+            "Associate, AWS Certified Developer",
+            "Associate and AWS Certified SysOps ...",
+        ],
+        content: [
+            "AWS Cerified Cloud Practitioner",
+            "AWS Certified Associate Core Knowledge",
+            "AWS Certified Developer Associate - Final Preparation",
+            "AWS Certified Solutions Architect Associate - Final Preparation",
+            "AWS Certified SysOps Administrator Associate - Final Preparation",
+        ]
+    },
+    {
+        id: "cIdBd2",
+        category: "aws",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQNUhEEAVqVTeTnKZVJOzL3mAkbE_oggh4r0Q&usqp=CAU",
+        course_name: "AWS Certified Security Specialty 2022",
+        description: "All you need to master AWS Certified Security Specialty certification.",
+       
+        duration: '10 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Close',
+        schedule: 'Tuesdays and Wednesday, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic AWS knowledge', 'Familiarity with cloud services'],
+       
+        creator: "Zeal Vora",
+        updated_date: "12/2022",
+        lang: ["english", "french"],
+        students: [
+            {
+            id: 103,
+            name: 'Nope Johnson',
+            email: 'nope@example.com',
+            },
+            {
+            id: 104,
+            name: 'Boby Smith',
+            email: 'boby@example.com',
+            },
+            {
+                id: 105,
+                name: 'Aria Were',
+                email: 'aria@example.com',   
+            }
+            ],
+        discounted_price: 10.99,
+        what_you_will_learn: [
+            "Will be prepared to give AWS Certified Security Specialty Exam",
+            "Gain deep insights about Enterprise grade Security implementation.",
+            "You will be able to Master the Security aspect of AWS",
+            "Will be able to detect attacks and protect the AWS infrastructure from Hackers.",
+        ],
+        content: [
+            "Getting started with the course",
+            "Domain 1 - Incident Response",
+            "Domain 2 - Logging & Monitoring",
+            "Domain 3 - Infrastructure Security",
+            "Domain 4 - Identity & Access Management",
+            "Domain 5 - Data Protection"
+        ]
+    },
+    {
+        id: "NkZeqm",
+        category: "aws",
+        image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLEhDd5w5zgBqIRcMEORv_7VEqcSy4KzA1pg&usqp=CAU",
+        course_name: "Part 1: AWS Certified Solutions Architect SAA C03 [Updated]",
+        description: "AWS Associate Exam - Master Foundations. Join Live Study Group Q&A!",
+        duration: '8 weeks',
+        location: 'Online',
+        enrollmentStatus: 'Open',
+        schedule: 'Wednesday and Thursdays, 6:00 PM - 8:00 PM',
+        prerequisites: ['Basic AWS knowledge', 'Familiarity with cloud services'],
+        creator: "Chandra Lingam",
+        updated_date: "8/2022",
+        lang: "english",
+        discounted_price: 15.99,
+        what_you_will_learn: [
+            "Breadth of understanding of various AWS services",
+            "How to Integrate Services into a Complete Solution",
+            "Hands-on Scenario Based Learning",
+            "Weekly Study Group Discussion Sessions",
+            "Concise and Precise Preparation for AWS Solutions Architect Certification"
+        ],
+        students :[
+            {
+                id: 104,
+                name: 'Boby Smith',
+                email: 'boby@example.com',
+                },
+                {
+                    id: 105,
+                    name: 'Aria Were',
+                    email: 'aria@example.com',   
+                }
+                ],
+        
+        content: [
+            "Housekeeping",
+            "Infrastructure, Pricing, Support - Review",
+            "Networking Primer",
+            "Virtual Private Cloud (VPC) - Networking Infrastructure",
+            "Elastic Compute Cloud (EC2) - Compute Service",
+            "Monitoring Resource in Cloud"
+        ]
+    },
+  
+];
+
+
+  
+  
+    export default courses;
