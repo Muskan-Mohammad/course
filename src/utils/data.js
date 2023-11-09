@@ -1,7 +1,6 @@
-import { course_images } from "./images";
-import axios from "axios";
 
-const courses = [
+
+const Users = [
     {
         id: "xMHCZl",
         category: "python",
@@ -897,4 +896,4 @@ const courses = [
 
   
   
-    export default courses;
+    export default Users;

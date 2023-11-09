@@ -1,58 +1,59 @@
-import React , {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 import Course from './Course';
 import courses from '../utils/data';
-import {PYTHON , WEB_DEVELOPMENT , DATA_SCIENCE , AWS } from '../utils/constants'
+import { PYTHON, WEB_DEVELOPMENT, DATA_SCIENCE, AWS } from '../utils/constants'
 import courseReducers from '../reducers/courseReducers';
 import { useCoursesContext } from '../context/coursesContext';
 import axios from 'axios';
 
 const Tabs = () => {
-    const [activeTab, setActiveTab] = useState(PYTHON);
-    const [courses , setCourses] = useState([]);
+  const [activeTab, setActiveTab] = useState(PYTHON);
+  const [courses, setCourses] = useState([]);
 
-   useEffect(()=>{
+  useEffect(() => {
     axios.get('http://localhost:3001/courses')
-    .then((res)=> 
-        {setCourses(res.data)} 
-    )
-   } , []);
-    const tabHandler = (category) => {
-      setActiveTab(category);
-    }
-  
-    return (
-      <TabsWrapper>
-        <div className='tabs'>
-          <ul className='flex flex-wrap'>
-            <li className='tabs-head-item'>
-              <button type = "button" className={`tab-btn ${activeTab === PYTHON}`} onClick = {() => tabHandler(PYTHON)}>Python</button>
-            </li>
-            <li className='tabs-head-item'>
-              <button type = "button" className={`tab-btn ${activeTab === WEB_DEVELOPMENT}`} onClick = {() => tabHandler(WEB_DEVELOPMENT)}>Web Development</button>
-            </li>
-            <li className='tabs-head-item'>
-              <button type = "button" className={`tab-btn ${activeTab === DATA_SCIENCE}`} onClick = {() => tabHandler(DATA_SCIENCE)}>Data Science</button>
-            </li>
-            <li className='tabs-head-item'>
-              <button type = "button" className={`tab-btn ${activeTab === AWS}`} onClick = {() => tabHandler(AWS)}>AWS Certification</button>
-            </li>
-          </ul>
-  
-          <div className='tabs-body'>
-            {
-              courses.filter(course => course.category === activeTab).map((course) => (
-                <Course key = {course.id} {...course} />
-              ))
-            }
-          </div>
-        </div>
-      </TabsWrapper>
-      
-    )
+      .then((res) => { setCourses(res.data) }
+      )
+  }, []);
+  const tabHandler = (category) => {
+    setActiveTab(category);
   }
-  
-  const TabsWrapper = styled.div`
+
+  const { enrollCoures = [] } = useCoursesContext()
+
+  return (
+    <TabsWrapper>
+      <div className='tabs'>
+        <ul className='flex flex-wrap'>
+          <li className='tabs-head-item'>
+            <button type="button" className={`tab-btn ${activeTab === PYTHON}`} onClick={() => tabHandler(PYTHON)}>Python</button>
+          </li>
+          <li className='tabs-head-item'>
+            <button type="button" className={`tab-btn ${activeTab === WEB_DEVELOPMENT}`} onClick={() => tabHandler(WEB_DEVELOPMENT)}>Web Development</button>
+          </li>
+          <li className='tabs-head-item'>
+            <button type="button" className={`tab-btn ${activeTab === DATA_SCIENCE}`} onClick={() => tabHandler(DATA_SCIENCE)}>Data Science</button>
+          </li>
+          <li className='tabs-head-item'>
+            <button type="button" className={`tab-btn ${activeTab === AWS}`} onClick={() => tabHandler(AWS)}>AWS Certification</button>
+          </li>
+        </ul>
+
+        <div className='tabs-body'>
+          {
+            courses.filter(course => course.category === activeTab).map((course) => (
+              <Course key={course.id} {...course} isAlreadyEnrolled={enrollCoures.includes(course.id)} />
+            ))
+          }
+        </div>
+      </div>
+    </TabsWrapper>
+
+  )
+}
+
+const TabsWrapper = styled.div`
     .tabs{
       margin-top: 16px;
       .tabs-head-item button{
@@ -95,6 +96,6 @@ const Tabs = () => {
       }
     }
   `;
-  
+
 
 export default Tabs

@@ -1,36 +1,132 @@
-import React from 'react';
+import React , {useState} from 'react';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
- import {useCartContext} from '../context/cartContext'
+import { useCartContext } from '../context/cartContext';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 
 const Course = (props) => {
-    const {id, image, course_name, creator, discounted_price, category} = props;
-     const {addToCart} = useCartContext();
+  const { id, image, course_name, creator, discounted_price, category, isAlreadyEnrolled } = props;
+  const { addToCart } = useCartContext();
+  const [isDialogOpen, setDialogOpen] = useState(false);
 
-    return (
-      <CourseCard>
-        <div className='item-img'>
-          <img src = {image} alt = {course_name} />
+  const handleEnrollClick = () => {
+    setDialogOpen(true);
+  };
+
+  const handleCloseDialog = () => {
+    setDialogOpen(false);
+  };
+
+  const handleEnrollSubmit = (data) => {
+    console.log('Enrollment data:', data);
+  };
+
+  return (
+    <CourseCard>
+      <div className='item-img'>
+        <img src={image} alt={course_name} />
+      </div>
+      <div className='item-body'>
+        <h5 className='item-name'>{course_name}</h5>
+        <span className='item-creator'>Instructor : {creator}</span>
+
+        <div className='item-price'>
+          <span className='item-price-new'>${discounted_price}</span>
         </div>
-        <div className='item-body'>
-          <h5 className='item-name'>{course_name}</h5>
-          <span className='item-creator'>Instructor : {creator}</span>
-          
-          <div className='item-price'>
-            <span className='item-price-new'>${discounted_price}</span>  
-          </div>
-        </div>
-        <div className='item-btns flex'>
-          <Link to = {`/courses/${id}`} className = "item-btn see-details-btn">See details</Link>
-          <Link to = "/cart" className='item-btn add-to-cart-btn' 
-          onClick={() => addToCart(id, image, course_name, creator, discounted_price, category)}
-          >Add to cart</Link>
-        </div>
-      </CourseCard>
-    )
-  }
-  
-  const CourseCard = styled.div`
+      </div>
+      <div className='item-btns flex'>
+        {/* <Link to={`/courses/${id}`} className="item-btn see-details-btn">See details</Link> */}
+        {isAlreadyEnrolled ? <>Already Enrolled</> :
+         <button  className='item-btn add-to-cart-btn' onClick={handleEnrollClick}
+        >Enroll Now</button>}
+          {isDialogOpen && <App onClose={handleCloseDialog} onSubmit={handleEnrollSubmit} />}
+      </div>
+    </CourseCard>
+  )
+}
+
+
+
+
+
+
+
+function App() {
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState('');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+
+  const handleEnrollClick = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleEnrollSubmit = () => {
+    // Handle enrollment data here
+    console.log('Enrollment data:', { id, name, email });
+    setOpen(false);
+  };
+
+  return (
+    <div>
+      <Button variant="outlined" onClick={handleEnrollClick}>
+        Enroll Now
+      </Button>
+      <Dialog open={open} onClose={handleClose}>
+        <DialogTitle>Enroll Now</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="id"
+            label="ID"
+            type="text"
+            fullWidth
+            value={id}
+            onChange={(e) => setId(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="name"
+            label="Name"
+            type="text"
+            fullWidth
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <TextField
+            margin="dense"
+            id="email"
+            label="Email"
+            type="text"
+            fullWidth
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleClose} color="primary">
+            Close
+          </Button>
+          <Button onClick={handleEnrollSubmit} color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </div>
+  );
+}
+
+
+
+
+
+
+const CourseCard = styled.div`
     margin-bottom: 20px;
     border: 1px solid rgba(0, 0, 0, 0.1);
     box-shadow: rgba(149, 157, 165, 0.1) 0px 8px 24px;

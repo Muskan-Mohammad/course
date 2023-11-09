@@ -33,7 +33,7 @@ const CourseList = () =>{
           <p>Choose from 4,000 online video courses with new additions publihsed every month</p>
         </div>
 
-        <Tabs courses = {courses} />
+        <Tabs courses={courses} />
       </div>
     </CoursesListWrapper>
   )

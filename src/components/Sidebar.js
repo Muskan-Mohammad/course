@@ -1,13 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from "styled-components";
 import {MdClose} from "react-icons/md";
 import {Link} from "react-router-dom";
 import { useSidebarContext } from '../context/sideBarContext';
 import { useCoursesContext } from '../context/coursesContext';
+import axios from 'axios';
 
 const Sidebar = () => {
   const {categories} = useCoursesContext();
   const {closeSidebar, isSidebarOpen} = useSidebarContext();
+  const [menu , setMenu]=  useState();
+// const category = "python"
+
+//   axios.get(`http://localhost:3001/courses/categories/${category}`)
+//   .then((res) => {
+//     console.log("res for categories" , res)
+//     setMenu(res.data)
+//   }).catch(console.log("error for data"))
 
   return (
     <SidebarWrapper className={`bg-white ${isSidebarOpen ? "show-sidebar" : ""}`}>

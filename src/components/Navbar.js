@@ -1,14 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
 import {MdMenu , MdShoppingCart} from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { useSidebarContext } from '../context/sideBarContext';
 import SearchBar from './SearchBar';
+import { useCoursesContext } from '../context/coursesContext';
 
 const Navbar = () => {
-  
+  const {courses} = useCoursesContext();
   const {openSidebar} = useSidebarContext();
-
+const {studentId} = useParams();
+ const id  = localStorage.getItem('studentId');
+ const count = localStorage.getItem("enroll" );
   return (
     <NavbarWrapper className = "bg-white flex">
       <div className='container w-100'>
@@ -18,10 +21,11 @@ const Navbar = () => {
           </Link>
          <SearchBar />
           <div className='navbar-btns flex'>
-            <Link to = "/cart" className='cart-btn'>
-              <MdShoppingCart />
-              <span className='item-count-badge'>0</span>
-            </Link>
+          <Link to={`/student/${id}`} className='cart-btn'>
+  <MdShoppingCart />
+  <span className='item-count-badge'>{count}</span>
+</Link>
+
             <button type = "button" className='sidebar-open-btn' onClick={() => openSidebar()}>
               {console.log("on click buttton clicked ")}
               <MdMenu />

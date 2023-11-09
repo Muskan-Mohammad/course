@@ -5,28 +5,57 @@ import {MdInfo} from "react-icons/md";
 import {TbWorld} from "react-icons/tb";
 import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
+import { useNavigate, useParams } from 'react-router-dom';
+import { styled as styles } from '@mui/material/styles';
+import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
+import { Button } from '@mui/material';
+import { useCoursesContext } from '../context/coursesContext';
+
+const BorderLinearProgress = styles(LinearProgress)(({ theme }) => ({
+  height: 10,
+  borderRadius: 5,
+  [`&.${linearProgressClasses.colorPrimary}`]: {
+    backgroundColor: theme.palette.grey[theme.palette.mode === 'light' ? 200 : 800],
+  },
+  [`& .${linearProgressClasses.bar}`]: {
+    borderRadius: 5,
+    backgroundColor: theme.palette.mode === 'light' ? '#1a90ff' : '#308fe8',
+  },
+}));
+
+
 const StudentDetails = () => {
   const [studentData, setStudentData] = useState(null);
   const studentIdToDisplay = 101; // Change to the desired student ID
-
+  const { studentId } = useParams();
+  const { setStudentCourses , studentCourses} = useCoursesContext()
+  console.log("enroled courses", studentCourses)
   useEffect(() => {
     // Make an HTTP GET request to fetch student data from your backend API
-    axios.get(`http://localhost:3001/student/${studentIdToDisplay}`)
+    axios.get(`http://localhost:3001/student/${studentId}`)
     .then((response) => {
         console.log("student res", response.data);
         setStudentData(response.data);
+        setStudentCourses(response.data?.enrolledCourses || [])
       })
       
       .catch((error) => {
         console.error('Error fetching student data:', error);
       });
-  }, [studentIdToDisplay]);
+  }, [studentId]);
+  const navigate = useNavigate();
+  const onClick = () => {
+    navigate('/home');
+  }
 
   return (
     <>
-     <h2 style={{ marginLeft:'500px' , marginBottom:'50px' , marginTop:'30px'}}>Enrollment Count: {studentData.enrollmentCount}</h2>
+  <Button onClick={onClick}>Go To Home</Button>     
 
         {studentData && studentData.enrolledCourses.map((course) => (
+          <>
+          <h2 style={{ marginLeft:'500px' , marginBottom:'50px' , marginTop:'30px'}}>Enrollment Count: {studentData.enrollmentCount}</h2>
+          {console.log(localStorage.setItem("enroll" , studentData.enrollmentCount))}
        <StudentCourseWrapper>
       <div className='course-intro mx-auto grid'>
         <div className='course-img'>
@@ -34,6 +63,7 @@ const StudentDetails = () => {
         </div>
         <div className='course-details'>
           <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.category}</div>
+          <button className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>Completed</button>
           <div className='course-head'>
             <h5>{course.courseName}</h5>
           </div>
@@ -43,10 +73,11 @@ const StudentDetails = () => {
               <span className='students-count fs-14'>Duration : {course.duration}</span>
               <span className='students-count fs-14'> Enrollment-Status : {course.enrollmentStatus}</span>
             </div>
-
+            <h2>Progrees Bar</h2>
+            <BorderLinearProgress variant="determinate" value={50} />
             <ul className='course-info'>
               <li>
-                <span className='fs-14'>Instructor <span className='fw-6 opacity-08'>{course.creator}</span></span>
+                <h4 className='fs-14'>Instructor <span className='fw-6 opacity-08'>{course.creator}</span></h4>
               </li>
               <li className='flex'>
                 <span><MdInfo /></span>
@@ -101,6 +132,7 @@ const StudentDetails = () => {
         </div>
       </div>
     </StudentCourseWrapper>
+    </>
      ))}
    </>
   );

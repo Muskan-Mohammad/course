@@ -2,11 +2,13 @@ const express = require ('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const studentModel = require('./database');
+// const Users = require('../src/utils/data');
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
+// console.log("users" , Users);
 
 mongoose.connect("mongodb://localhost:27017/students" , { useNewUrlParser: true, useUnifiedTopology: true })
 .then(() => {
@@ -38,67 +40,93 @@ app.post('/courses', async (req, res) => {
     }
   });
 
-  app.get('/courses/:id', async (req, res) => {
-    const { id } = req.params; 
-    studentModel.findOne({ id: id })
-      .then(course => {
-        if (course) {
-          res.json(course); 
-          // console.log(course , "details")
+  // app.get('/courses/:id', async (req, res) => {
+  //   const { id } = req.params; 
+  //   studentModel.findOne({ id: id })
+  //     .then(course => {
+  //       if (course) {
+  //         res.json(course); 
+  //         // console.log(course , "details")
+  //       } else {
+  //         res.status(404).json({ message: "No such course" });
+  //       }
+  //     })
+  //     .catch(error => {
+  //       res.status(500).json({ message: "Internal server error" });
+  //     });
+  // });
+  app.get('/courses/categories/:category', async (req, res) => {
+    const { category } = req.params;
+  
+    studentModel.find({ category: category })
+      .then(courses => {
+        if (courses.length > 0) {
+          res.json(courses);
         } else {
-          res.status(404).json({ message: "No such course" });
+          res.status(404).json({ message: `No courses found in the ${category} category` });
         }
       })
       .catch(error => {
+        console.error('Error:', error);
         res.status(500).json({ message: "Internal server error" });
       });
   });
-
+  
+  
+  
+  
 
   app.get('/student/:studentId', async (req, res) => {
     const studentIdToDisplay = parseInt(req.params.studentId);
-
+  
     try {
       const courses = await studentModel.find().exec();
   
-      // Step 1: Extract Student IDs and Count
-      const studentCounts = {};
+      // Step 1: Extract Student IDs, Emails, and Count
+      const studentData = {};
       courses.forEach((course) => {
         course.students.forEach((student) => {
           const studentId = student.id;
-          if (studentCounts[studentId]) {
-            studentCounts[studentId]++;
-          } else {
-            studentCounts[studentId] = 1;
+          const studentEmail = student.email;
+          if (!studentData[studentId]) {
+            studentData[studentId] = {
+              email: studentEmail,
+              count: 0,
+            };
           }
+          studentData[studentId].count++;
         });
       });
-      // Step 2: Display Data of a Specific Student
-      const coursesWithStudent = courses.filter((course) =>
-        course.students.some((student) => student.id === studentIdToDisplay)
-      );
   
-      if (coursesWithStudent.length > 0) {
+      // Step 2: Display Data of a Specific Student
+      const studentInfo = studentData[studentIdToDisplay];
+      if (studentInfo) {
+        const coursesWithStudent = courses.filter((course) =>
+          course.students.some((student) => student.id === studentIdToDisplay)
+        );
+  
         const studentData = {
           studentId: studentIdToDisplay,
+          studentEmail: studentInfo.email,
+          enrollmentCount: studentInfo.count,
           enrolledCourses: coursesWithStudent.map((course) => ({
             courseName: course.course_name,
-            creator:course.creator,
-            category:course.category,
-            description:course.description,
-            image:course.image,
-            duration:course.duration,
-            location:course.location,
-            enrollmentStatus:course.enrollmentStatus,
-            schedule:course.schedule,
-            prerequisites:course.prerequisites,
-            update:course.updated_date,
-            price:course.discounted_price,
-            content:course.content,
-            learn:course.what_you_will_learn
-
+            id:course.id,
+            creator: course.creator,
+            category: course.category,
+            description: course.description,
+            image: course.image,
+            duration: course.duration,
+            location: course.location,
+            enrollmentStatus: course.enrollmentStatus,
+            schedule: course.schedule,
+            prerequisites: course.prerequisites,
+            update: course.updated_date,
+            price: course.discounted_price,
+            content: course.content,
+            learn: course.what_you_will_learn
           })),
-          enrollmentCount: studentCounts[studentIdToDisplay] || 0,
+          
         };
   
         res.json(studentData);
@@ -111,22 +139,49 @@ app.post('/courses', async (req, res) => {
     }
   });
   
-  // app.get('/search', (req, res) => {
-  //   const query = req.query.query.toLowerCase(); 
-  //   const results = studentModel.filter((course) => {
-  //     return (
-  //       course.duration.toLowerCase().includes(query) ||
-  //       course.description.toLowerCase().includes(query) ||
-  //       course.enrollmentStatus.toLowerCase().includes(query) ||
-  //       course.content.join(' ').toLowerCase().includes(query) ||
-  //       course.category.toLowerCase().includes(query) ||
-  //       course.creator.toLowerCase().includes(query) ||
-  //       course.enrollmentStatus.toLowerCase().includes(query) ||
-  //       course.course_name.toLowerCase().includes(query)       
-  //     );
-  //   });
-  //   res.json(results);
-  // });
+  app.post("/student/:studentId" , (req , res) => {
+    const {email , id} = req.body;
+    studentModel.findOne({email:email})
+    .then(users => {
+        if(users){
+            if(users.id === id){
+                res.json("Success")
+            } else {
+                res.json("User  Incorrect ")
+            }
+        } else {
+            res.json("No Such User Found ")
+        }
+    })
+})
+
+ 
+
+app.get('/home/search', async (req, res) => {
+  const { q } = req.query;
+  const keys = ["category", "course_name", "duration", "creator", "description", "content"];
+
+  const search = async () => {
+    try {
+      const data = await studentModel.find().exec();
+      return data.filter((item) => {
+        return keys.some((key) => item[key] && item[key].toLowerCase().includes(q.toLowerCase()));
+      });
+    } catch (error) {
+      console.error('Error:', error);
+      throw error;
+    }
+  };
+
+  try {
+    const searchResults = await search();
+    res.json(searchResults.slice(0, 10));
+  } catch (error) {
+    res.status(500).json({ message: "Internal server error" });
+  }
+});
+
+
   app.get('/status/:enrollmentStatus', async (req, res) => {
     studentModel.find({ enrollmentStatus: "Close" })
       .then(course => {
@@ -171,8 +226,6 @@ app.post('/courses', async (req, res) => {
         res.status(500).json({ message: "Internal server error" });
       });
   });
-  
-  
   
   
   

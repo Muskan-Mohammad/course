@@ -31,6 +31,6 @@ const course_images = {aws_1, aws_2, aws_3, data_science_1, data_science_2, data
 
 const other_images = {hero_img, logo_udemy};
 
-const categories_images = [cat_python, cat_web_development,  cat_data_science, cat_aws ];
+const categories_images = [cat_python, cat_web_development,  cat_data_science, cat_aws ,cat_design];
 
 export {course_images, other_images, categories_images};

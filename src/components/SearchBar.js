@@ -2,56 +2,62 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
+
+
+
                                                                              
 function SearchBar() {
-  const [searchQuery, setSearchQuery] = useState('');
-  const [foundCourse, setFoundCourse] = useState(null);
- 
-  const handleSearch = async () => {
-    try {
-      const response = await axios.get(`http://localhost:3001/search?query=${searchQuery}`);
-      setFoundCourse(response.data);
-      console.log(response , "res for found")
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return (
+  const [query, setQuery] = useState('');
+  const keys = ["category", "course_name", "duration" , "creator" , "description" ,"content" ];
+ const search = (data) => {
+  return data.filter(
+    (item) => keys.some()
+  )
+ }
+return (
     <div>
       <input
         type="text"
         placeholder="Search for courses"
-        value={searchQuery}
-        onChange={(e) => setSearchQuery(e.target.value)}
+        onChange={(e) => setQuery(e.target.value)}
+        style={{marginTop:'2rem' , border:'2px solid black' , padding:'10px' , marginLeft:'5rem'}}
       />
-      <button onClick={handleSearch}>Search</button>
-
-      {foundCourse && foundCourse.length > 0 ? (
-        foundCourse.map((course) => (
-          <div key={course.id}>
-            <h3>{course.course_name}</h3>
-            <p>Price: ${course.discounted_price}</p>
-            <p>Duration: {course.duration}</p>
-            <p>Location: {course.location}</p>
-            {/* Add more properties as needed */}
-          </div>
-        ))
-      ) : (
-        <p>No courses found.</p>
-      )}
+ {/* <Table  data={Users}/>  */}
     </div>
   );
 }
 
 export default SearchBar;
 
+function Table ({data}){
+  return(
+    <table>
+      <tbody>
+        <tr>
+          <th>CourseName</th>  
+          <th>Category</th>  
+          <th>Duration</th>
+          <th>Creator</th>
+
+        </tr>
+        {data.map(item => (
+        <tr>
+        <td>{item.course_name}</td>
+          <td>{item.category}</td>
+          <td>{item.duration}</td>
+          <td>{item.creator}</td>
+          </tr>
+           ))}
+      </tbody>
+       </table>
+  )
+}
 
 
 
  export function CloseList() {
   const [courses, setCourses] = useState([]);
-  const [enrollmentStatus, setEnrollmentStatus] = useState('close'); // Set the default status
+  const [enrollmentStatus, setEnrollmentStatus] = useState('Close'); // Set the default status
 
   useEffect(() => {
     // Fetch data from the backend when the component mounts or when enrollmentStatus changes
@@ -90,7 +96,7 @@ export default SearchBar;
 
 export function OpenList() {
     const [courses, setCourses] = useState([]);
-    const [enrollmentStatus, setEnrollmentStatus] = useState('open'); // Set the default status
+    const [enrollmentStatus, setEnrollmentStatus] = useState('Open'); // Set the default status
   
     useEffect(() => {
       // Fetch data from the backend when the component mounts or when enrollmentStatus changes
@@ -130,7 +136,7 @@ export function OpenList() {
 
   export function ProgressList() {
     const [courses, setCourses] = useState([]);
-    const [enrollmentStatus, setEnrollmentStatus] = useState('open'); // Set the default status
+    const [enrollmentStatus, setEnrollmentStatus] = useState('In Progress'); // Set the default status
   
     useEffect(() => {
       // Fetch data from the backend when the component mounts or when enrollmentStatus changes

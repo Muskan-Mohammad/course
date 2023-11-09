@@ -75,7 +75,7 @@ const SingleCoursePage = () => {
             <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' 
             // onClick={() => addToCart( image, course_name, creator, discounted_price, category)}
             >
-              <FaShoppingCart /> Add to cart
+              <FaShoppingCart /> Enrolled 
             </Link>
           </div>
         </div>

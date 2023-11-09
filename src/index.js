@@ -12,12 +12,10 @@ root.render(
   <React.StrictMode>
     <SidebarProvider>
       <CoursesProvider>
-      <CartProvider>
-   
-    <App />
-  
-</CartProvider>
-    </CoursesProvider>
+        <CartProvider>
+          <App />
+        </CartProvider>
+      </CoursesProvider>
     </SidebarProvider>
   </React.StrictMode>
 );
