@@ -3,6 +3,9 @@ import styled from 'styled-components';
 import { Link } from 'react-router-dom';
 import { useCartContext } from '../context/cartContext';
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import axios from 'axios';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Course = (props) => {
   const { id, image, course_name, creator, discounted_price, category, isAlreadyEnrolled } = props;
@@ -56,6 +59,7 @@ function App() {
   const [id, setId] = useState('');
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
+  const [courseId ,  setCourse] = useState('');
 
   const handleEnrollClick = () => {
     setOpen(true);
@@ -66,19 +70,47 @@ function App() {
   };
 
   const handleEnrollSubmit = () => {
-    // Handle enrollment data here
-    console.log('Enrollment data:', { id, name, email });
+    const enrollmentData = {
+      courseId, // Course ID or identifier
+      id, // Student ID
+      name, // Student Name
+      email, // Student Email
+    };
+    console.log('Enrollment data:', enrollmentData);
     setOpen(false);
+    axios
+  .post('http://localhost:3001/courses', enrollmentData)
+  .then((response) => {
+    console.log('Enrollment data sent to the backend:', response.data);
+    setOpen(false); 
+    toast.success("You have successfully enrolled into it ")
+  })
+  .catch((error) => {
+    console.error('Error sending enrollment data:', error);
+    toast.error("Plz try to enroll in it again ")
+  });  
   };
+  
 
   return (
     <div>
+      <ToastContainer />
       <Button variant="outlined" onClick={handleEnrollClick}>
+        <ToastContainer />
         Enroll Now
       </Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Enroll Now</DialogTitle>
         <DialogContent>
+        <TextField
+            margin="dense"
+            id="email"
+            label="Course ID"
+            type="text"
+            fullWidth
+            value={courseId}
+            onChange={(e) => setCourse(e.target.value)}
+          />
           <TextField
             autoFocus
             margin="dense"

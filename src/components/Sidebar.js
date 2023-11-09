@@ -26,15 +26,28 @@ const Sidebar = () => {
     <div className='sidebar-content'>
       <h6 className='fs-18'>Top Categories</h6>
       <ul className='sidebar-category'>
-        {/* {
-          categories.map((category, idx) => {
-            return (
-              <li className='sidebar-link-item fw-5' key = {idx}>
-                <Link to = {`category/${category}`}>{category.toUpperCase()}</Link>
-              </li>
-            )
-          })
-        } */}
+    
+         
+              <li className='sidebar-link-item fw-5' >
+                <Link 
+                // to = {`category/${category}`}
+                >PYTHON</Link>
+          </li>
+          <li className='sidebar-link-item fw-5' >
+                <Link
+                //  to = {`category/${category}`}
+                 >WEB DEVELOPMENT</Link>
+          </li>
+          <li className='sidebar-link-item fw-5' >
+                <Link 
+                // to = {`category/${category}`}
+                >DATA SCIENCE</Link>
+          </li>
+          <li className='sidebar-link-item fw-5' >
+                <Link 
+                // to = {`category/${category}`}
+                >AWS CERTIFICATION</Link>
+          </li>
       </ul>
     </div>
   </SidebarWrapper>

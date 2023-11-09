@@ -14,6 +14,7 @@ const studentsSchema  = new mongoose.Schema({
     creator:String,
     updated_date:String,
     lang:String,
+    courseDone: String, 
     discounted_price:Number,
     what_you_will_learn:[String],
      content:[String],

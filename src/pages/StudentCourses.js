@@ -26,7 +26,7 @@ const BorderLinearProgress = styles(LinearProgress)(({ theme }) => ({
 
 const StudentDetails = () => {
   const [studentData, setStudentData] = useState(null);
-  const studentIdToDisplay = 101; // Change to the desired student ID
+  const [isCompleted, setIsCompleted] = useState(false);
   const { studentId } = useParams();
   const { setStudentCourses , studentCourses} = useCoursesContext()
   console.log("enroled courses", studentCourses)
@@ -47,7 +47,9 @@ const StudentDetails = () => {
   const onClick = () => {
     navigate('/home');
   }
-
+  const handleClick = () => {
+    setIsCompleted(!isCompleted);
+  };
   return (
     <>
   <Button onClick={onClick}>Go To Home</Button>     
@@ -63,7 +65,7 @@ const StudentDetails = () => {
         </div>
         <div className='course-details'>
           <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.category}</div>
-          <button className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>Completed</button>
+          <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.courseDone}</div>
           <div className='course-head'>
             <h5>{course.courseName}</h5>
           </div>

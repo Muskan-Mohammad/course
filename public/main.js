@@ -4,6 +4,7 @@ const cors = require('cors');
 const studentModel = require('./database');
 // const Users = require('../src/utils/data');
 
+
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -19,17 +20,40 @@ mongoose.connect("mongodb://localhost:27017/students" , { useNewUrlParser: true,
   });
 
 
-app.post('/courses', async (req, res) => {
+  app.post('/courses', async (req, res) => {
+    const { courseId, id, name, email } = req.body;
     try {
-      const data = req.body; 
-      const course = new studentModel(data);
-      await course.save();
-      res.status(201).json({ message: 'Course data saved successfully' });
+      const course = await studentModel.findOne({ id: courseId }); 
+      console.log("id course" , course)
+      if (!course) {
+        return res.status(404).json({ error: 'Course not found with that ID' });
+      }
+      course.students.push({ id, name, email });
+      await course.save();  
+      res.status(200).json({ message: 'Enrollment successful', student: { id, name, email } });
     } catch (error) {
-      res.status(500).json({ message: 'Error saving course data', error });
+      return res.status(500).json({ error: 'Course cannot be updated' });
     }
   });
-
+  app.post('/courses/updateStatus', async (req, res) => {
+    const { courseId } = req.body; 
+    try {
+      const course = await studentModel.findOne({ id: courseId });
+      if (!course) {
+        return res.status(404).json({ error: 'Course not found with that ID' });
+      }
+      if (course.courseDone === 'In Complete') {
+        course.courseDone = 'Completed';
+        await course.save();
+        res.status(200).json({ message: 'Course status updated to Completed' });
+      } else {
+        res.status(400).json({ error: 'Course status is not eligible for update' });
+      }
+    } catch (error) {
+      return res.status(500).json({ error: 'Course status update failed' });
+    }
+  });
+  
   app.get('/courses', async (req, res) => {
     try {
       const allProducts = await studentModel.find(); 
@@ -72,10 +96,6 @@ app.post('/courses', async (req, res) => {
       });
   });
   
-  
-  
-  
-
   app.get('/student/:studentId', async (req, res) => {
     const studentIdToDisplay = parseInt(req.params.studentId);
   
@@ -112,6 +132,7 @@ app.post('/courses', async (req, res) => {
           enrolledCourses: coursesWithStudent.map((course) => ({
             courseName: course.course_name,
             id:course.id,
+            courseDone:course.courseDone,
             creator: course.creator,
             category: course.category,
             description: course.description,
@@ -154,8 +175,6 @@ app.post('/courses', async (req, res) => {
         }
     })
 })
-
- 
 
 app.get('/home/search', async (req, res) => {
   const { q } = req.query;
