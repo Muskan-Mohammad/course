@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import {MdMenu , MdShoppingCart} from 'react-icons/md';
 import { Link } from 'react-router-dom';
 import { useSidebarContext } from '../context/sideBarContext';
+import SearchBar from './SearchBar';
 
 const Navbar = () => {
   
@@ -15,7 +16,7 @@ const Navbar = () => {
           <Link to = "/" className='navbar-brand text-uppercase ls-1 fw-8'>
             <span>C</span>OURSERA
           </Link>
-
+         <SearchBar />
           <div className='navbar-btns flex'>
             <Link to = "/cart" className='cart-btn'>
               <MdShoppingCart />

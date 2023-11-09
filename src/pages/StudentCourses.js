@@ -1,34 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import { useParams, useSearchParams } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import styled from "styled-components";
-import { useCoursesContext } from '../context/coursesContext';
 import {MdInfo} from "react-icons/md";
 import {TbWorld} from "react-icons/tb";
-import {FaShoppingCart} from "react-icons/fa";
 import {RiClosedCaptioningFill} from "react-icons/ri";
 import {BiCheck} from "react-icons/bi";
-import {Link} from "react-router-dom";
-import { useCartContext } from '../context/cartContext';
-import axios from 'axios';
+const StudentDetails = () => {
+  const [studentData, setStudentData] = useState(null);
+  const studentIdToDisplay = 101; // Change to the desired student ID
 
-const SingleCoursePage = () => {
-  const {id} = useParams();
-
-  const [course, setCourse] = useState({});
   useEffect(() => {
-    axios.get(`http://localhost:3001/courses/${id}`)
-      .then(response => {
-        console.log( "data" , response )
-        setCourse(response.data);
+    // Make an HTTP GET request to fetch student data from your backend API
+    axios.get(`http://localhost:3001/student/${studentIdToDisplay}`)
+    .then((response) => {
+        console.log("student res", response.data);
+        setStudentData(response.data);
       })
-      .catch(error => {
-        console.error('Error fetching course data:', error);
+      
+      .catch((error) => {
+        console.error('Error fetching student data:', error);
       });
-  }, [id]);
-
+  }, [studentIdToDisplay]);
 
   return (
-    <SingleCourseWrapper>
+    <>
+     <h2 style={{ marginLeft:'500px' , marginBottom:'50px' , marginTop:'30px'}}>Enrollment Count: {studentData.enrollmentCount}</h2>
+
+        {studentData && studentData.enrolledCourses.map((course) => (
+       <StudentCourseWrapper>
       <div className='course-intro mx-auto grid'>
         <div className='course-img'>
         {course.image && <img src={course.image} alt="Course Image" />}
@@ -36,7 +35,7 @@ const SingleCoursePage = () => {
         <div className='course-details'>
           <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.category}</div>
           <div className='course-head'>
-            <h5>{course.course_name}</h5>
+            <h5>{course.courseName}</h5>
           </div>
           <div className='course-body'>
             <p className='course-para fs-18'>{course.description}</p>
@@ -66,17 +65,9 @@ const SingleCoursePage = () => {
 
           <div className='course-foot'>
             <div className='course-price'>
-              <span className='new-price fs-26 fw-8'>${course.discounted_price}</span>
-              
+              <span className='new-price fs-26 fw-8'>${course.price}</span>
+          
             </div>
-          </div>
-
-          <div className='course-btn'>
-            <Link to = "/cart" className='add-to-cart-btn d-inline-block fw-7 bg-purple' 
-            // onClick={() => addToCart( image, course_name, creator, discounted_price, category)}
-            >
-              <FaShoppingCart /> Add to cart
-            </Link>
           </div>
         </div>
       </div>
@@ -85,10 +76,10 @@ const SingleCoursePage = () => {
         <div className='course-learn mx-auto'>
           <div className='course-sc-title'>What you'll learn</div>
           <ul className='course-learn-list grid'>
-          {course.what_you_will_learn && course.what_you_will_learn.map((learnItem, idx) => (
+          {course.learn && course.learn.map((learning, idx) => (
   <li key={idx}>
     <span><BiCheck /></span>
-    <span className='fs-14 fw-5 opacity-09'>{learnItem}</span>
+    <span className='fs-14 fw-5 opacity-09'>{learning}</span>
   </li>
 ))}
           </ul>
@@ -109,14 +100,18 @@ const SingleCoursePage = () => {
           </ul>
         </div>
       </div>
-    </SingleCourseWrapper>
-  )
-}
+    </StudentCourseWrapper>
+     ))}
+   </>
+  );
+};
 
-const SingleCourseWrapper = styled.div`
-  background: var(--clr-dark);
+const StudentCourseWrapper = styled.div`
+
+background: var(--clr-dark);
   color: var(--clr-white);
 
+ 
   .course-intro{
     padding: 40px 16px;
     max-width: 992px;
@@ -180,6 +175,7 @@ const SingleCourseWrapper = styled.div`
         }
       }
     }
+
 
     @media screen and (min-width: 880px){
       grid-template-columns: repeat(2, 1fr);
@@ -248,4 +244,4 @@ const SingleCourseWrapper = styled.div`
 
 `;
 
-export default SingleCoursePage
+export default StudentDetails;
