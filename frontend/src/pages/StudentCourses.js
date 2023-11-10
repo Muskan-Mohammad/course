@@ -10,6 +10,7 @@ import { styled as styles } from '@mui/material/styles';
 import LinearProgress, { linearProgressClasses } from '@mui/material/LinearProgress';
 import { Button } from '@mui/material';
 import { useCoursesContext } from '../context/coursesContext';
+import { Modal, TextField } from '@mui/material';
 
 const BorderLinearProgress = styles(LinearProgress)(({ theme }) => ({
   height: 10,
@@ -27,8 +28,12 @@ const BorderLinearProgress = styles(LinearProgress)(({ theme }) => ({
 const StudentDetails = () => {
   const [studentData, setStudentData] = useState(null);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [courseId, setCourseId] = useState('');
+  const [studentIds, setStudentId] = useState('');
   const { studentId } = useParams();
-  const { setStudentCourses , studentCourses} = useCoursesContext()
+  const [message, setMessage] = useState('');
+  const { setStudentCourses , studentCourses} = useCoursesContext();
+  const [courseStatus, setCourseStatus] = useState('In Complete');
   console.log("enroled courses", studentCourses)
   useEffect(() => {
     // Make an HTTP GET request to fetch student data from your backend API
@@ -47,9 +52,22 @@ const StudentDetails = () => {
   const onClick = () => {
     navigate('/home');
   }
-  const handleClick = () => {
-    setIsCompleted(!isCompleted);
-  };
+  const handleUpdateStatus = async () => {
+    try {
+      const response = await axios.patch(`http://localhost:3001/courses/updateStatus/${studentId}`, {
+        courseId,
+        courseDone: 'Completed',
+      });
+
+      if (response.status === 200) {
+        setMessage(response.data.message);
+      } else {
+        setMessage(response.data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
   return (
     <>
   <Button onClick={onClick}>Go To Home</Button>     
@@ -65,7 +83,9 @@ const StudentDetails = () => {
         </div>
         <div className='course-details'>
           <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.category}</div>
-          <div className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'>{course.courseDone}</div>
+          <CourseUpdate  course={course.courseDone}/>
+        
+
           <div className='course-head'>
             <h5>{course.courseName}</h5>
           </div>
@@ -277,5 +297,85 @@ background: var(--clr-dark);
   }
 
 `;
+
+
+
+
+
+function CourseUpdate({course}) {
+  const [studentId, setStudentId] = useState('');
+  const [courseId, setCourseId] = useState('');
+  const [message, setMessage] = useState('');
+  const [openModal, setOpenModal] = useState(false);
+
+  const handleOpenModal = () => {
+    setOpenModal(true);
+  };
+
+  const handleCloseModal = () => {
+    setOpenModal(false);
+  };
+
+  const handleUpdateStatus = async () => {
+    try {
+      const response = await axios.patch(`http://localhost:3001/courses/updateStatus/${studentId}`, {
+        studentId,
+        courseId,
+        courseStatus: 'Completed',
+      });
+
+      if (response.status === 200) {
+        setMessage(response.data.message);
+        handleCloseModal(); // Close the modal after successful update
+      } else {
+        setMessage(response.data.error);
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    if (studentId && courseId) {
+      handleUpdateStatus();
+    }
+  }, [studentId, courseId]);
+
+  return (
+    <div>
+      <h1>Update Course Status</h1>
+      <div
+        className='course-category bg-white text-dark text-capitalize fw-6 fs-12 d-inline-block'
+        onClick={handleOpenModal}
+      >
+        {course}
+      </div>
+
+      {/* Modal for inputting student ID and course ID */}
+      <Modal open={openModal} onClose={handleCloseModal}>
+        <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)' , backgroundColor:'white' , padding:'20px' }}>
+          <TextField
+            label="Student ID"
+            variant="outlined"
+            value={studentId}
+            onChange={(e) => setStudentId(e.target.value)}
+          />
+          <TextField
+            label="Course ID"
+            variant="outlined"
+            value={courseId}
+            onChange={(e) => setCourseId(e.target.value)}
+          />
+          <Button variant="contained" color="primary" onClick={handleUpdateStatus}>
+            Submit
+          </Button>
+        </div>
+      </Modal>
+
+      {message && <p>{message}</p>}
+    </div>
+  );
+}
+
 
 export default StudentDetails;

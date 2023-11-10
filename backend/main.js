@@ -35,24 +35,36 @@ mongoose.connect("mongodb://localhost:27017/students" , { useNewUrlParser: true,
       return res.status(500).json({ error: 'Course cannot be updated' });
     }
   });
-  app.post('/courses/updateStatus', async (req, res) => {
-    const { courseId } = req.body; 
-    try {
+  app.patch('/courses/updateStatus/:studentId', async (req, res) => {  
+    const { courseId, courseStatus, studentId } = req.body;
+    console.log('Received parameters:', courseId, courseStatus, studentId);
+  
+    try { 
       const course = await studentModel.findOne({ id: courseId });
+      console.log('Found course:', course);
+  
       if (!course) {
         return res.status(404).json({ error: 'Course not found with that ID' });
       }
-      if (course.courseDone === 'In Complete') {
-        course.courseDone = 'Completed';
-        await course.save();
-        res.status(200).json({ message: 'Course status updated to Completed' });
-      } else {
-        res.status(400).json({ error: 'Course status is not eligible for update' });
-      }
+  
+      const studentIndex = course.students.findIndex(student => student.id === parseInt(studentId));
+      console.log('Student index:', studentIndex);
+  
+      if (studentIndex === -1) {
+        return res.status(404).json({ error: 'Student not found in the course' });
+      } 
+  
+      course.courseDone = courseStatus;
+      await course.save();
+  
+      res.status(200).json({ message: 'Course status updated successfully' });
     } catch (error) {
+      console.error(error);
       return res.status(500).json({ error: 'Course status update failed' });
     }
   });
+  
+  
   
   app.get('/courses', async (req, res) => {
     try {
@@ -64,21 +76,6 @@ mongoose.connect("mongodb://localhost:27017/students" , { useNewUrlParser: true,
     }
   });
 
-  // app.get('/courses/:id', async (req, res) => {
-  //   const { id } = req.params; 
-  //   studentModel.findOne({ id: id })
-  //     .then(course => {
-  //       if (course) {
-  //         res.json(course); 
-  //         // console.log(course , "details")
-  //       } else {
-  //         res.status(404).json({ message: "No such course" });
-  //       }
-  //     })
-  //     .catch(error => {
-  //       res.status(500).json({ message: "Internal server error" });
-  //     });
-  // });
   app.get('/courses/categories/:category', async (req, res) => {
     const { category } = req.params;
   
