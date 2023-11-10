@@ -14,15 +14,15 @@ services:
     # Create backend container  
     build: ./backend
     ports:
-      - "8080:8080"
+      - "3001:3001"
     container_name: backend-docker
     restart: always
     links:
       - db
   # Create database container
   db:
-    image: postgres:11.6-alpine
+    image: mongo:3.6.19-xenial
     ports:
-    - "5432:5432"
+    - "27017:27017"
     container_name: database-docker
     restart: always
